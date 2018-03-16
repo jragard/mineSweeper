@@ -23,10 +23,15 @@ function board(target_div) {
         }
         
         for (let mine = 0; mine < mineInput; mine++) {
-            let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
+            let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput) + 1);
             let cellToReplace = document.getElementById(mineCellIndex);
-
-            cellToReplace.className = "mines";
+            if (cellToReplace.className === "cell") {
+                cellToReplace.className = "mines";
+            } else if (cellToReplace.className === "mines") {
+                let nextCellToReplace = document.getElementsByClassName("cell");
+                nextCellToReplace[0].className = "mines";
+            }
+            
         }
     }
 
