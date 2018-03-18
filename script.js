@@ -1,80 +1,131 @@
-let container_div = document.getElementById("container");
-let boardArray = [];
-let cellNum = 0;
-let mineCellIndex;
+function handleEvent(event) {
 
-function board(target_div) {
+    let widthInput = document.getElementById("width").value;
+    let heightInput = document.getElementById("height").value;
+    let mineInput = Number(document.getElementById("mines").value);
 
-    this.generateCells = function (widthInput, heightInput, mineInput) {
+    let container_div = document.getElementById("container");
+    container_div.innerHTML = "";
+    container_div.style.width = widthInput * 52 + "px";
+    container_div.style.height = heightInput * 52 + "px";
 
-        for (let i = 0; i < heightInput; i++) {
-            boardArray.push([]);
-            for (let j = 0; j < widthInput; j++) {
-                cellNum++;
-                boardArray[i].push(cellNum);
-                this.cell = document.createElement("div");
-                this.cell.className = "cell";
-                this.cell.id = cellNum;
-                this.cell.addEventListener("contextmenu", this.rightClick, false);
-                this.cell.addEventListener("click", this.leftClick);
-                target_div.appendChild(this.cell);
-                
-            }
-        }
+    // let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
+    // let cellToReplace = document.getElementById(mineCellIndex);
+
+   
+
+    function rightClick(event) {
+        let target = event.target;
+        event.preventDefault();
         
-        for (let mine = 0; mine < mineInput; mine++) {
-            let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput) + 1);
+        if (target.className === "cell") {
+            target.className = "flag";
+        } else if (target.className === "flag") {
+            target.className = "cell";
+        }
+        return false;
+    }
+
+    function leftClick(event) {
+        let target = event.target;
+        target.className = "safeCells";
+
+        let row = Math.floor(target.id / widthInput);
+        let col = target.id % widthInput;
+
+        target.dataset.columns = col;
+        target.dataset.row = row;
+
+        checkArray.push(boardArray[row - 1][col - 1]);
+        checkArray.push(boardArray[row - 1][col]);
+        checkArray.push(boardArray[row - 1][col + 1]);
+        checkArray.push(boardArray[row][col + 1]);
+        checkArray.push(boardArray[row + 1][col + 1]);
+        checkArray.push(boardArray[row + 1][col]);
+        checkArray.push(boardArray[row + 1][col - 1]);
+        checkArray.push(boardArray[row][col - 1]);
+
+            
+        
+        // console.log(checkArray);
+        // boardArray[row][col]
+
+        // console.log(boardArray[row][col])
+
+        // console.log(row);
+        // console.log(col);
+    }
+
+
+
+    generateCells(widthInput, heightInput, mineInput);
+
+
+    function generateCells(widthInput, heightInput, mineInput) {
+
+        
+
+        function generateMines() {
+            let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
             let cellToReplace = document.getElementById(mineCellIndex);
+            mineArray.push(mineCellIndex);
             if (cellToReplace.className === "cell") {
                 cellToReplace.className = "mines";
             } else if (cellToReplace.className === "mines") {
-                let nextCellToReplace = document.getElementsByClassName("cell");
+                nextCellToReplace = document.getElementsByClassName("cell");
                 nextCellToReplace[0].className = "mines";
             }
-            
         }
-    }
 
-    
-    this.handleEvent = function (event) {
-        let widthInput = document.getElementById("width").value;
-        let heightInput = document.getElementById("height").value;
-        let mineInput = Number(document.getElementById("mines").value);
-        container_div.innerHTML = "";
-        container_div.style.width = widthInput * 52 + "px";
-        container_div.style.height = heightInput * 52 + "px";
-        this.generateCells(widthInput, heightInput, mineInput);
-    }
+        for (let i = 0; i < heightInput; i++) {
+            boardArray.push([]);
 
-    
-    this.rightClick = function (event) {
-        let target = event.target;
-        event.preventDefault();
-        if (target.className === "cell") {
-            target.className = "flag";
-        
-       } else if (target.className === "flag") {
-            target.className = "cell";
-       }
-        return false;
-        console.log(target.style.backgroundColor);
-    }
+            for (let j = 0; j < widthInput; j++) {
+                cellNum++;
 
-    this.leftClick = function (event) {
-        let target = event.target;
-        console.log(target.className);
-        target.className = "safeCells";
-        
-        let widthInput = document.getElementById("width").value;
-        let heightInput = document.getElementById("height").value;
-        let mineInput = Number(document.getElementById("mines").value);
-     }
+                let cell = document.createElement("div");
+                cell.className = "cell";
+                cell.id = cellNum;
 
-    let button = document.getElementById("startGame");
-    button.addEventListener("click", this);
+                let row = Math.floor(cellNum / widthInput);
+                let col = cellNum % widthInput;
+                
+
+                
+
+                boardArray[i].push(cellNum);
+
+                cell.addEventListener("contextmenu", rightClick, false);
+                cell.addEventListener("click", leftClick);
+
+                container_div.appendChild(cell);
+
+            }
+        }
+
+        for (let i = 0; i < mineInput; i++) {
+            generateMines();
+}
 
 }
 
-var object = new board(container_div);
 
 
+
+
+
+
+
+
+
+}
+
+let boardArray = [];
+let mineArray = [];
+let checkArray = [];
+let cellNum = -1;
+
+
+
+let button = document.getElementById("startGame");
+button.addEventListener("click", this);
