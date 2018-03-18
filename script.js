@@ -27,6 +27,7 @@ function handleEvent(event) {
     }
 
     function leftClick(event) {
+        let checkArray = [];
         let target = event.target;
         target.className = "safeCells";
 
@@ -36,18 +37,77 @@ function handleEvent(event) {
         target.dataset.columns = col;
         target.dataset.row = row;
 
-        checkArray.push(boardArray[row - 1][col - 1]);
-        checkArray.push(boardArray[row - 1][col]);
-        checkArray.push(boardArray[row - 1][col + 1]);
-        checkArray.push(boardArray[row][col + 1]);
-        checkArray.push(boardArray[row + 1][col + 1]);
-        checkArray.push(boardArray[row + 1][col]);
-        checkArray.push(boardArray[row + 1][col - 1]);
-        checkArray.push(boardArray[row][col - 1]);
+        console.log(row);
+        console.log(col);
+
+        if (row === 0 && col === 0) {
+            checkArray.push(boardArray[row][col + 1]);
+            checkArray.push(boardArray[row + 1][col + 1]);
+            checkArray.push(boardArray[row + 1][col]);
+        } else if (row === 0 && col === widthInput - 1) {
+            checkArray.push(boardArray[row][col - 1]);
+            checkArray.push(boardArray[row + 1][col - 1]);
+            checkArray.push(boardArray[row + 1][col]);
+        } else if (row === heightInput - 1 && col === 0) {
+            checkArray.push(boardArray[row - 1][col]);
+            checkArray.push(boardArray[row - 1][col + 1]);
+            checkArray.push(boardArray[row][col + 1]);
+        } else if (row === heightInput - 1 && col === widthInput - 1) {
+            checkArray.push(boardArray[row - 1][col]);
+            checkArray.push(boardArray[row - 1][col - 1]);
+            checkArray.push(boardArray[row][col - 1]);
+        } else if (col === 0) {
+            checkArray.push(boardArray[row - 1][col]);
+            checkArray.push(boardArray[row - 1][col + 1]);
+            checkArray.push(boardArray[row][col + 1]);
+            checkArray.push(boardArray[row + 1][col + 1]);
+            checkArray.push(boardArray[row + 1][col]);
+        } else if (row === 0) {
+            checkArray.push(boardArray[row][col - 1]);
+            checkArray.push(boardArray[row + 1][col - 1]);
+            checkArray.push(boardArray[row + 1][col]);
+            checkArray.push(boardArray[row + 1][col + 1]);
+            checkArray.push(boardArray[row][col + 1]);
+        } else if (row === heightInput - 1) {
+            checkArray.push(boardArray[row][col - 1]);
+            checkArray.push(boardArray[row - 1][col - 1]);
+            checkArray.push(boardArray[row - 1][col]);
+            checkArray.push(boardArray[row - 1][col + 1]);
+            checkArray.push(boardArray[row][col + 1]);
+        } else if (col === widthInput - 1) {
+            checkArray.push(boardArray[row - 1][col]);
+            checkArray.push(boardArray[row - 1][col - 1]);
+            checkArray.push(boardArray[row][col - 1]);
+            checkArray.push(boardArray[row + 1][col - 1]);
+            checkArray.push(boardArray[row + 1][col]);
+        } else {
+            checkArray.push(boardArray[row - 1][col - 1]);
+            checkArray.push(boardArray[row - 1][col]);
+            checkArray.push(boardArray[row - 1][col + 1]);
+            checkArray.push(boardArray[row][col + 1]);
+            checkArray.push(boardArray[row + 1][col + 1]);
+            checkArray.push(boardArray[row + 1][col]);
+            checkArray.push(boardArray[row + 1][col - 1]);
+            checkArray.push(boardArray[row][col - 1]);
+        }
+
+        
+
+        let mineNeighbors = checkArray.filter(function(val) {
+            return mineArray.indexOf(val) != -1;
+        });
+
+        let number = mineNeighbors.length;
+
+        console.log(mineNeighbors);
+
+        target.innerHTML = number;
+
+        
 
             
         
-        // console.log(checkArray);
+        console.log(checkArray);
         // boardArray[row][col]
 
         // console.log(boardArray[row][col])
@@ -68,12 +128,15 @@ function handleEvent(event) {
         function generateMines() {
             let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
             let cellToReplace = document.getElementById(mineCellIndex);
-            mineArray.push(mineCellIndex);
+            
             if (cellToReplace.className === "cell") {
                 cellToReplace.className = "mines";
+                mineArray.push(mineCellIndex);
             } else if (cellToReplace.className === "mines") {
                 nextCellToReplace = document.getElementsByClassName("cell");
                 nextCellToReplace[0].className = "mines";
+                let string = nextCellToReplace[0].id;
+                mineArray.push(parseInt(string));
             }
         }
 
@@ -101,6 +164,8 @@ function handleEvent(event) {
                 container_div.appendChild(cell);
 
             }
+
+            
         }
 
         for (let i = 0; i < mineInput; i++) {
@@ -121,8 +186,8 @@ function handleEvent(event) {
 }
 
 let boardArray = [];
-let mineArray = [];
-let checkArray = [];
+let mineArray = [""];
+// let checkArray = [];
 let cellNum = -1;
 
 
