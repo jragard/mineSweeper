@@ -1,3 +1,5 @@
+
+
 function handleEvent(event) {
 
     let widthInput = document.getElementById("width").value;
@@ -167,7 +169,7 @@ function handleEvent(event) {
 
         
 
-        if (target.className === "safeCells") {
+        if (target.className === "safeCells" && number != 0) {
 
         target.innerHTML = number; }
         target.dataset.number = number;
@@ -282,7 +284,7 @@ function handleEvent(event) {
             
         }
         
-            console.log(cellCount.length);
+            
         for (let i = 0; i < mineInput; i++) {
             generateMines();
 }
