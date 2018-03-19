@@ -27,7 +27,11 @@ function handleEvent(event) {
     }
 
     function leftClick(event) {
-        let checkArray = [];
+        // for (i = 0; i < checkArray.length; i++) {
+
+        // }
+
+        checkArray = [];
         let target = event.target;
         target.className = "safeCells";
 
@@ -132,11 +136,12 @@ function handleEvent(event) {
             if (cellToReplace.className === "cell") {
                 cellToReplace.className = "mines";
                 mineArray.push(mineCellIndex);
-            } else if (cellToReplace.className === "mines") {
+            } else {
                 nextCellToReplace = document.getElementsByClassName("cell");
-                nextCellToReplace[0].className = "mines";
                 let string = nextCellToReplace[0].id;
+                nextCellToReplace[0].className = "mines";
                 mineArray.push(parseInt(string));
+                
             }
         }
 
@@ -186,9 +191,11 @@ function handleEvent(event) {
 }
 
 let boardArray = [];
-let mineArray = [""];
-// let checkArray = [];
+let mineArray = [];
+let checkArray = [];
 let cellNum = -1;
+
+
 
 
 
