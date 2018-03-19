@@ -4,32 +4,43 @@ function handleEvent(event) {
     let heightInput = document.getElementById("height").value;
     let mineInput = Number(document.getElementById("mines").value);
 
-    let flagCount = mineInput;
+    let flex = document.getElementById("flexDiv");
+    flex.style.width = widthInput * 32 + "px";
 
-    let timer = 000;
-
-    function timeIncrease() {
-        setInterval(function(){
-            timer++; }, 1000);
-        }
     
+    let timer = 0;
+
+    function setTime() {
+        timer = timer + 1;
+        timerDest.innerHTML = timer;
+    }
+
+    
+
+
 
     let container_div = document.getElementById("container");
     container_div.innerHTML = "";
     container_div.style.width = widthInput * 32 + "px";
     container_div.style.height = heightInput * 32 + "px";
-
-    // let flagCount = document.getElementsByClassName("flag");
-
     let cellCount = document.getElementsByClassName("cell");
 
-    let flagCountDest = document.getElementById("flagCount");
-    flagCountDest.style.width = widthInput * 32 + "px";
     
-    
+    let flagCount = mineInput;
     let flagText = document.createTextNode(flagCount);
-
+    let flagCountDest = document.getElementById("flagCount");
+    flagCountDest.style.width = widthInput * 16 + "px";
     flagCountDest.appendChild(flagText);
+
+    
+    let timerText = document.createTextNode(timer);
+    let timerDest = document.getElementById("timer");
+    timerDest.style.width = widthInput * 16 + "px";
+    timerDest.appendChild(timerText);
+    
+    
+    
+    setInterval(setTime, 1000);
 
 
     let destination = document.getElementById("winMessage");
@@ -297,8 +308,6 @@ let boardArray = [];
 let mineArray = [];
 let checkArray = [];
 let cellNum = -1;
-
-
 
 
 
