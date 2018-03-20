@@ -1,27 +1,24 @@
 .cell {
     height: 30px;
     width: 30px;
-    background-color: gray;
+    background-image: url("closed.png");
     border: 1px solid black;
-    /* border-radius: 4px; */
-    box-shadow: 5px 5px 5px gray;
+    
 }
 
 .mines {
     height: 30px;
     width: 30px;
-    background-color: gray;
+    background-image: url("closed.png");
     border: 1px solid black;
-    /* border-radius: 4px; */
-    box-shadow: 5px 5px 5px gray;
 }
 
 .revealedMines {
     height: 30px;
     width: 30px;
-    background-color: black;
+    background-image: url("mine.png");
+    background-color: red;
     border: 1px solid black;
-    box-shadow: 5px 5px 5px gray;
 }
 
 .safeCells {
@@ -30,26 +27,20 @@
     align-items: center;
     height: 30px;
     width: 30px;
-    background-color: white;
+    background-color: lightgray;
     border: 1px solid black;
-    /* border-radius: 4px; */
-    box-shadow: 5px 5px 5px gray;
 }
 
 #container {
-    /* width: 800px;
-    height: 800px; */
     display: flex;
     flex-wrap: wrap;
-    /* margin-top: 15px; */
-    /* background-color: green; */
 }
 
 .flag {
     height: 30px;
     width: 30px;
-    background-color: red;
     border: 1px solid black;
+    background-image: url("flag.png");
 }
 
 #winMessage {
@@ -60,22 +51,17 @@
 }
 
 #flagCount {
-    /* margin-top: 25px; */
-    /* border: 1px solid black; */
     height: 35px;
     display: flex;
     justify-content: space-between;
     font-weight: bold;
     color: red;
-    /* background-color:green; */
-
 }
 
 #flexDiv {
     display: flex;
     flex-direction: row;
     margin-top: 30px;
-    /* background-color: yellow; */
 }
 
 #timer {
