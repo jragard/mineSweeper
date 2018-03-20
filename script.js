@@ -39,7 +39,7 @@ function handleEvent(event) {
     timerDest.style.width = widthInput * 16 + "px";
     timerDest.appendChild(timerText);
 
-    setInterval(setTime, 1000);
+    let myTimer = setInterval(setTime, 1000);
 
     let destination = document.getElementById("winMessage");
     let loseText = document.createTextNode("You Lose");
@@ -83,6 +83,7 @@ function handleEvent(event) {
 
                 if (cellCount.length === 0) {
                     revealMines();
+                    clearInterval(myTimer);
                     destination.appendChild(winText);
                 }
 
