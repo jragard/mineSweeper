@@ -2,11 +2,27 @@ let boardArray = [];
 let mineArray = [];
 let checkArray = [];
 let cellNum = -1;
+let firstClick = true;
 
 let button = document.getElementById("startGame");
 button.addEventListener("click", this);
 
 function handleEvent(event) {
+
+    function generateMines() {
+        let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
+        let cellToReplace = document.getElementById(mineCellIndex);
+
+        if (cellToReplace.className === "cell") {
+            cellToReplace.className = "mines";
+            mineArray.push(mineCellIndex);
+        } else {
+            nextCellToReplace = document.getElementsByClassName("cell");
+            let string = nextCellToReplace[0].id;
+            nextCellToReplace[0].className = "mines";
+            mineArray.push(parseInt(string));
+        }
+    }
 
     let widthInput = document.getElementById("width").value;
     let heightInput = document.getElementById("height").value;
@@ -76,10 +92,19 @@ function handleEvent(event) {
         checkArray = [];
         let target = event.target;
 
+        if (firstClick) {
+            target.className === "safeCells";
+            for (let i = 0; i < mineInput; i++) {
+                generateMines();
+            }
+            firstClick = false;
+        }
+
         for (i = 0; i < boardArray.length; i++) {
 
             if (target.className === "cell") {
                 target.className = "safeCells";
+
 
                 if (cellCount.length === 0) {
                     revealMines();
@@ -195,20 +220,20 @@ function handleEvent(event) {
 
     function generateCells(widthInput, heightInput, mineInput) {
 
-        function generateMines() {
-            let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
-            let cellToReplace = document.getElementById(mineCellIndex);
+        // function generateMines() {
+        //     let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
+        //     let cellToReplace = document.getElementById(mineCellIndex);
 
-            if (cellToReplace.className === "cell") {
-                cellToReplace.className = "mines";
-                mineArray.push(mineCellIndex);
-            } else {
-                nextCellToReplace = document.getElementsByClassName("cell");
-                let string = nextCellToReplace[0].id;
-                nextCellToReplace[0].className = "mines";
-                mineArray.push(parseInt(string));
-            }
-        }
+        //     if (cellToReplace.className === "cell") {
+        //         cellToReplace.className = "mines";
+        //         mineArray.push(mineCellIndex);
+        //     } else {
+        //         nextCellToReplace = document.getElementsByClassName("cell");
+        //         let string = nextCellToReplace[0].id;
+        //         nextCellToReplace[0].className = "mines";
+        //         mineArray.push(parseInt(string));
+        //     }
+        // }
 
         for (let i = 0; i < heightInput; i++) {
             boardArray.push([]);
@@ -232,8 +257,8 @@ function handleEvent(event) {
             }
         }
 
-        for (let i = 0; i < mineInput; i++) {
-            generateMines();
-        }
+        // for (let i = 0; i < mineInput; i++) {
+        //     generateMines();
+        // }
     }
 }

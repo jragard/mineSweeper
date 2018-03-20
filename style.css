@@ -10,6 +10,7 @@
     height: 30px;
     width: 30px;
     background-image: url("closed.png");
+    /* background-color: green; */
     border: 1px solid black;
 }
 
