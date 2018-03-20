@@ -1,4 +1,10 @@
+let boardArray = [];
+let mineArray = [];
+let checkArray = [];
+let cellNum = -1;
 
+let button = document.getElementById("startGame");
+button.addEventListener("click", this);
 
 function handleEvent(event) {
 
@@ -9,7 +15,6 @@ function handleEvent(event) {
     let flex = document.getElementById("flexDiv");
     flex.style.width = widthInput * 32 + "px";
 
-    
     let timer = 0;
 
     function setTime() {
@@ -17,56 +22,40 @@ function handleEvent(event) {
         timerDest.innerHTML = timer;
     }
 
-    
-
-
-
     let container_div = document.getElementById("container");
     container_div.innerHTML = "";
     container_div.style.width = widthInput * 32 + "px";
     container_div.style.height = heightInput * 32 + "px";
     let cellCount = document.getElementsByClassName("cell");
 
-    
     let flagCount = mineInput;
     let flagText = document.createTextNode(flagCount);
     let flagCountDest = document.getElementById("flagCount");
     flagCountDest.style.width = widthInput * 16 + "px";
     flagCountDest.appendChild(flagText);
 
-    
     let timerText = document.createTextNode(timer);
     let timerDest = document.getElementById("timer");
     timerDest.style.width = widthInput * 16 + "px";
     timerDest.appendChild(timerText);
-    
-    
-    
-    setInterval(setTime, 1000);
 
+    setInterval(setTime, 1000);
 
     let destination = document.getElementById("winMessage");
     let loseText = document.createTextNode("You Lose");
     let winText = document.createTextNode("You Win");
 
-
-   
-
     function rightClick(event) {
         let target = event.target;
         event.preventDefault();
-        
+
         target.classList.toggle("flag");
         if (target.classList.contains("flag")) {
             flagCount--;
             flagCountDest.innerHTML = flagCount;
-            // flagCountDest.appendChild(flagCount);
-            console.log(flagCount);
         } else {
             flagCount++;
             flagCountDest.innerHTML = flagCount;
-            // flagCountDest.appendChild(flagCount);
-            console.log(flagCount);
         }
         return false;
     }
@@ -76,44 +65,34 @@ function handleEvent(event) {
             let revealedMine = document.getElementById(mineArray[i]);
             if (revealedMine.className === "flag" && revealedMine.className === "mines") {
                 revealedMine.className === "flag";
-            } else {revealedMine.className = "revealedMines"};
+            } else {
+                revealedMine.className = "revealedMines"
+            };
         }
     }
 
-    
-
     function leftClick(event) {
-        
-        
 
         checkArray = [];
         let target = event.target;
 
         for (i = 0; i < boardArray.length; i++) {
 
-        
-        if (target.className === "cell") {
-        target.className = "safeCells";
+            if (target.className === "cell") {
+                target.className = "safeCells";
 
-        if (cellCount.length === 0) {
-            revealMines();
-            destination.appendChild(winText);
+                if (cellCount.length === 0) {
+                    revealMines();
+                    destination.appendChild(winText);
+                }
+
+            }
+            if (target.className === "mines") {
+
+                revealMines();
+                destination.appendChild(loseText);
+            }
         }
-        
-
-
-       } if (target.className === "mines") {
-           
-           revealMines();
-           
-            
-            destination.appendChild(loseText);
-            
-            
-        }
-    }
-    
-    
 
         let row = Math.floor(target.id / widthInput);
         let col = target.id % widthInput;
@@ -121,129 +100,104 @@ function handleEvent(event) {
         target.dataset.columns = col;
         target.dataset.row = row;
 
-        
-
         if (row !== 0 && col !== 0) {
-            // above + left
             checkArray.push(boardArray[row - 1][col - 1]);
         }
         if (row !== 0) {
-            // above
             checkArray.push(boardArray[row - 1][col]);
         }
         if (row !== 0 && col < widthInput - 1) {
-            // above + right
             checkArray.push(boardArray[row - 1][col + 1]);
         }
         if (col < widthInput - 1) {
-            // right
             checkArray.push(boardArray[row][col + 1]);
         }
         if (row < heightInput - 1 && col < widthInput - 1) {
-            // below + right
             checkArray.push(boardArray[row + 1][col + 1]);
         }
         if (row < heightInput - 1) {
-            // below
             checkArray.push(boardArray[row + 1][col]);
         }
         if (row < heightInput - 1 && col !== 0) {
-            // below + left
             checkArray.push(boardArray[row + 1][col - 1]);
         }
         if (col !== 0) {
-            // left
             checkArray.push(boardArray[row][col - 1]);
         }
 
-        
-
-        let mineNeighbors = checkArray.filter(function(val) {
+        let mineNeighbors = checkArray.filter(function (val) {
             return mineArray.indexOf(val) != -1;
         });
 
-
         let number = mineNeighbors.length;
-        
-        target.dataset.number = number;  
 
-        
+        target.dataset.number = number;
 
         if (target.className === "safeCells" && number != 0) {
 
-        target.innerHTML = number; }
+            target.innerHTML = number;
+        }
         target.dataset.number = number;
-        
-
-       
 
         if (number === 0 && row !== 0 && col !== 0) {
-            // above + left
             let upLeft = document.getElementById(boardArray[row - 1][col - 1]);
             if (target.className === "safeCells" && upLeft.className === "cell") {
-            upLeft.click(); }
+                upLeft.click();
+            }
         }
         if (number === 0 && row !== 0) {
-            // above
             let up = document.getElementById(boardArray[row - 1][col]);
             if (target.className === "safeCells" && up.className === "cell") {
-                up.click(); }
+                up.click();
+            }
         }
         if (number === 0 && row !== 0 && col < widthInput - 1) {
-            // above + right
             let upRight = document.getElementById(boardArray[row - 1][col + 1]);
             if (target.className === "safeCells" && upRight.className === "cell") {
-                upRight.click(); }
+                upRight.click();
+            }
         }
         if (number === 0 && col < widthInput - 1) {
-            // right
             let right = document.getElementById(boardArray[row][col + 1]);
             if (target.className === "safeCells" && right.className === "cell") {
-                right.click(); }
+                right.click();
+            }
         }
         if (number === 0 && row < heightInput - 1 && col < widthInput - 1) {
             let downRight = document.getElementById(boardArray[row + 1][col + 1]);
-            // below + right
+
             if (target.className === "safeCells" && downRight.className === "cell") {
-                downRight.click(); }
+                downRight.click();
+            }
         }
         if (number === 0 && row < heightInput - 1) {
-            // below
             let down = document.getElementById(boardArray[row + 1][col]);
             if (target.className === "safeCells" && down.className === "cell") {
-                down.click(); }
+                down.click();
+            }
         }
         if (number === 0 && row < heightInput - 1 && col !== 0) {
-            // below + left
             let downLeft = document.getElementById(boardArray[row + 1][col - 1]);
             if (target.className === "safeCells" && downLeft.className === "cell") {
-                downLeft.click(); }
+                downLeft.click();
+            }
         }
         if (number === 0 && col !== 0) {
-            // left
             let left = document.getElementById(boardArray[row][col - 1]);
             if (target.className === "safeCells" && left.className === "cell") {
-                left.click(); }
+                left.click();
+            }
         }
-
-        console.log(cellCount.length);
-        
-} 
-
-
+    }
 
     generateCells(widthInput, heightInput, mineInput);
 
-
     function generateCells(widthInput, heightInput, mineInput) {
-
-        
-        // flagCountDest.appendChild(timer);
 
         function generateMines() {
             let mineCellIndex = Math.floor(Math.random() * (widthInput * heightInput));
             let cellToReplace = document.getElementById(mineCellIndex);
-            
+
             if (cellToReplace.className === "cell") {
                 cellToReplace.className = "mines";
                 mineArray.push(mineCellIndex);
@@ -252,7 +206,6 @@ function handleEvent(event) {
                 let string = nextCellToReplace[0].id;
                 nextCellToReplace[0].className = "mines";
                 mineArray.push(parseInt(string));
-                
             }
         }
 
@@ -268,9 +221,6 @@ function handleEvent(event) {
 
                 let row = Math.floor(cellNum / widthInput);
                 let col = cellNum % widthInput;
-                
-
-                
 
                 boardArray[i].push(cellNum);
 
@@ -278,40 +228,11 @@ function handleEvent(event) {
                 cell.addEventListener("click", leftClick);
 
                 container_div.appendChild(cell);
-
             }
-            
-            
         }
-        
-            
+
         for (let i = 0; i < mineInput; i++) {
             generateMines();
+        }
+    }
 }
-
-        
-
-}
-
-
-
-
-
-
-
-
-
-
-}
-
-
-
-let boardArray = [];
-let mineArray = [];
-let checkArray = [];
-let cellNum = -1;
-
-
-
-let button = document.getElementById("startGame");
-button.addEventListener("click", this);
